@@ -19,7 +19,14 @@ function updateTextspace(newStr) {
 }
 function showPreview(keyId) {
   const keyEle = document.getElementById(keyId)
-  if(keyEle && !keyEle.classList.contains('unicode32')) {
+  if(keyEle) {
+    if(keyEle.classList.contains('unicode32')) {
+      console.log('---', {lastTypedCharacter: STATE.lastTypedCharacter})
+      if(STATE.lastTypedCharacter !== ' ') STATE.page = 0
+      if(!STATE.capsLock && STATE.page === 0) STATE.shiftOn = false
+      showPage()
+      return
+    }
     const previewEle = document.getElementById('keyPreview') || document.createElement('div')
     previewEle.id = 'keyPreview'
     previewEle.textContent = keyEle.textContent
@@ -54,11 +61,11 @@ function showPage() {
       keyEle.id = `${pageId}-key${serial}`
 
       keyEle.ontouchstart = () => {
-        document.getElementById(keyEle.id).classList.add('pressing')
+        document.getElementById(keyEle.id)?.classList.add('pressing')
         showPreview(keyEle.id)
       }
       keyEle.ontouchend = () => {
-        document.getElementById(keyEle.id).classList.remove('pressing')
+        document.getElementById(keyEle.id)?.classList.remove('pressing')
         hidePreview()
       }
 
@@ -66,11 +73,12 @@ function showPage() {
       if(typeof key === 'string') {
         keyEle.classList.add(`unicode${key.charCodeAt()}`)
         keyEle.ontouchend = () => {
-          document.getElementById(keyEle.id).classList.remove('pressing')
+          document.getElementById(keyEle.id)?.classList.remove('pressing')
           hidePreview()
           STATE.textSpace += key
+          STATE.lastTypedCharacter = key
           renderTextspace()
-          if(STATE.shiftOn && !STATE.capsLock) {
+          if(STATE.shiftOn && !STATE.capsLock && STATE.page === 0) {
             STATE.shiftOn = false
             showPage()
           }

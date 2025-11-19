@@ -4,6 +4,7 @@ const STATE = {
   reverseMode: localStorage.getItem('reverseMode') == 1,
   textSpace: '',
   page: 0,
+  lastTypedCharacter: ' ',
   backspace: {
     active: false,
     heldAt: 0,
