@@ -1,0 +1,210 @@
+:root {
+  --bezierQuartOut: cubic-bezier(0,.75,.25,1);
+}
+
+@keyframes toastAppear {
+  0% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  20%, 70% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  85% {
+    opacity: 0;
+    font-size: 1rem;
+    padding: 1rem 1.3rem;
+    margin-bottom: .5rem;
+  }
+  100% {
+    transform: translateY(-50%);
+    opacity: 0;
+    padding: 0rem 0rem;
+    font-size: 0rem;
+    margin-bottom: 0rem;
+  }
+}
+
+body {
+  background-color: #181818;
+  color: white;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Helvetica,ヒラギノ角ゴ Pro W3,メイリオ,Meiryo,ＭＳ Ｐゴシック,Arial,sans-serif;
+  font-size: 6svw;
+  margin: 0;
+  overflow: hidden;
+  touch-action: manipulation;
+  display: flex;
+  flex-direction: column;
+  transition: rotate 200ms var(--bezierQuartOut);
+}
+body.reverse { rotate: 180deg; }
+body.reverse #capsLockContainer { order: 3 }
+body.reverse #keyboard { order: 2 }
+body.reverse #textSpace { order: 1 }
+body.reverse #toasts { order: 0 }
+
+#keyboard {
+  padding-top: 6svw;
+  padding-bottom: 3svw;
+  display: grid;
+  background-color: #3D3E3F;
+  gap: 1.35svw;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  -webkit-user-drag: none;
+}
+.kbRow {
+  display: flex;
+  justify-content: center;
+  /* gap: 1.25svw; */
+}
+.kbKey {
+  background-color: #78797A;
+  aspect-ratio: 99/126;
+  /* width: 8.75svw; */
+  height: 11.1363636364svw;
+  border-radius: 2svw;
+  display: flex;
+  border: #3D3E3F solid 0.625svw;
+  justify-content: center;
+  align-items: center;
+}
+#keyPreview {
+  position: absolute;
+  aspect-ratio: 1/1;
+  height: 11.1363636364svw;
+  text-align: center;
+  background-color: #78797A;
+  background: linear-gradient(0deg, #78797A 10%, #494d50 100%);
+  /* padding: 0svw 2svw; */
+  font-size: 10svw;
+  border-radius: 2.5svw;
+  box-shadow: 0 4.5svw 0 #78797A, 0 0 1rem #222323, 0 0 1rem #222323;
+  transform: translateY(-14svw);
+}
+.kbKey.special {
+  background-color: #505152;
+}
+.kbKey.pressing {
+  background-color: #8f8f8f;
+}
+.kbKey.dynamicWidth {
+  aspect-ratio: unset;
+  height: unset;
+  font-size: 3.5svw;
+  padding: 2.7svw 3.5svw;
+}
+
+#page0s-key3_0,
+#page0S-key3_0,
+#page1s-key3_0,
+#page1S-key3_0 { /* left_shift */
+  margin-right: 2.5svw;
+  aspect-ratio: 1/1;
+}
+#page1s-key3_0,
+#page1S-key3_0 { /* left_shift on Page 1*/
+  font-size: 3.75svw;
+}
+#page0s-key3_8,
+#page0S-key3_8,
+#page1s-key3_6,
+#page1S-key3_6 { /* backspace */
+  margin-left: 2.5svw;
+  aspect-ratio: 1/1;
+}
+#page0s-key4_0,
+#page0S-key4_0,
+#page1s-key4_0,
+#page1S-key4_0 { /* 123/ABC key */
+  aspect-ratio: 4/3;
+  font-size: 3.75svw;
+}
+#page0s-key4_2,
+#page0S-key4_2,
+#page1s-key4_2,
+#page1S-key4_2 { /* return key */
+  aspect-ratio: 5/3;
+  font-size: 3.5svw;
+}
+#page1s-key3_5,
+#page1S-key3_5 {
+  background-color: #78797A;
+}
+#keyboard.page1s > .kbRow.row3 > .kbKey,
+#keyboard.page1S > .kbRow.row3 > .kbKey {
+  aspect-ratio: 1.105;
+}
+.kbKey.unicode32 { /* space bar */
+  aspect-ratio: 45/8;
+}
+
+#textSpace {
+  width: calc(100svw - 2rem);
+  padding: .5rem;
+  margin: .5rem;
+  height: 6rem;
+  background-color: #131313;
+  color: white;
+  border: none;
+  box-shadow: 0 0 .5rem #3f3f3f;
+  font-size: 1rem;
+}
+
+#capsLockContainer {
+  font-size: .8rem;
+  font-weight: 700;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding-left: .5rem;
+  padding-bottom: .75rem;
+  background-color: #3D3E3F;
+}
+.capsLockLight {
+  width: 0.4rem;
+  height: 0.4rem;
+  background-color: #555;
+  border: 0.123rem #181818 solid;
+  border-radius: 1rem;
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: 300ms;
+  transition-timing-function: var(--bezierQuartOut);
+}
+#capsLockContainer::after {
+  content: "OFF";
+}
+#capsLockContainer.on > .capsLockLight {
+  background-color: #73DE68;
+  border: 0.123rem green solid;
+  box-shadow: 0 0 .7rem #73DE68, 0 0 .7rem #73DE68, 0 0 .7rem #73DE68;
+}
+#capsLockContainer.on::after {
+  content: "ON";
+}
+
+#toasts {
+  display: grid;
+  justify-content: center;
+  text-align: center;
+}
+.toast {
+  animation-name: toastAppear;
+  animation-timing-function: var(--bezierQuartOut);
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  background-color: #272727;
+  color: #9d9ca2;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 1rem 1.3rem;
+  border-radius: 100vh;
+  margin-bottom: .5rem;
+  box-shadow: 0 .15rem 1rem rgb(14, 14, 14);
+}
